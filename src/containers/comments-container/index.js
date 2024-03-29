@@ -18,7 +18,6 @@ function CommentsContainer() {
   const dispatch = useDispatch();
 
   const params = useParams();
-  // Параметры из пути /articles/:id
 
   useInit(() => {
     dispatch(commentsActions.load(params.id))
@@ -44,6 +43,7 @@ function CommentsContainer() {
     }, [token, params.id])
   }
 
+  const {t, language} = useTranslate();
   const renders = {
     item: useCallback(item => (
       <CommentItem
@@ -55,15 +55,15 @@ function CommentsContainer() {
         sendReply={callbacks.sendReply}
         depth={1}
         user={user._id}
+        t={t}
+        language={language}
       />
-    ), [t, exists, select.formOpen]),
+    ), [t, exists, select.formOpen, language]),
   };
 
   const options = {
     comments: select.comments.items && filterListByParent(select.comments.items, params.id)
   }
-
-  const {t} = useTranslate();
 
   return (
     <CommentsBlock
@@ -74,6 +74,7 @@ function CommentsContainer() {
       exists={exists}
       sendComment={callbacks.sendComment}
       isFormOpen={select.formOpen}
+      t={t}
     />
   )
 }

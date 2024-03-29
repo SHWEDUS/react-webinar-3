@@ -35,6 +35,8 @@ function CommentItem(props) {
     props.setOpen(id)
   }
 
+  console.log(props.language)
+
   useEffect(() => {
     textarea.current && textarea.current?.scrollIntoView({behavior: 'smooth', block: 'center'})
   }, [props.isFormOpen])
@@ -46,12 +48,12 @@ function CommentItem(props) {
         <div className={cn('block')}>
           <div className={cn('title')}>
             <b className={props.item.author._id === props.user ? cn('title__author') : ''}>{props.item.author?.profile?.name}</b>
-            <span>{formatDate(props.item?.dateCreate)}</span>
+            <span>{formatDate(props.item?.dateCreate, props.language)}</span>
           </div>
           <div className={cn('content')}>
             <p>{props.item?.text}</p>
           </div>
-          <button className={cn('link')} onClick={() => setFormOpen(props.item._id)}>Ответить</button>
+          <button className={cn('link')} onClick={() => setFormOpen(props.item._id)}>{props.t('comments.reply')}</button>
         </div>
 
         {props.item.replies?.map(reply => (
@@ -65,22 +67,24 @@ function CommentItem(props) {
               sendReply={props.sendReply}
               depth={props.depth + 1}
               user={props.user}
+              t={props.t}
+              language={props.language}
             />
           ))}
       </div>
       {props.isFormOpen === `textarea_${props.item._id}` && props.exists && (
         <div ref={textarea} className={cn('reply')} style={{marginLeft: `${marginLeft + 30}px`}}>
-          <TextArea label={'Новый ответ'} value={value} placeholder={'Напишите свой ответ'} onChange={setReply}>
+          <TextArea label={props.t('comments.newReply')} value={value} placeholder={props.t('comments.placeholder')} onChange={setReply}>
             <div className={cn('reply__btns')}>
-              <button onClick={() => sendReply(props.item._id)}>Отправить</button>
-              <button onClick={() => setFormClose(props.item._id)}>Отмена</button>
+              <button onClick={() => sendReply(props.item._id)}>{props.t('comments.send')}</button>
+              <button onClick={() => setFormClose(props.item._id)}>{props.t('comments.cancel')}</button>
             </div>
           </TextArea>
         </div>
       )}
       {props.isFormOpen === `textarea_${props.item._id}` && !props.exists &&(
-        <LoginAlert text={'ответить.'}>
-          <button ref={textarea} className={cn('link__cancel')} onClick={() => setFormClose(props.item._id)}>Отмена</button>
+        <LoginAlert text={props.t('comments.replyText')} t={props.t}>
+          <button ref={textarea} className={cn('link__cancel')} onClick={() => setFormClose(props.item._id)}>{props.t('comments.cancel')}</button>
         </LoginAlert>
       )}
     </>

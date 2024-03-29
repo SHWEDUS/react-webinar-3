@@ -5,7 +5,7 @@ import { isEmptyOrSpaces } from '../../utils/is-empty-or-spaces'
 import LoginAlert from '../login-alert'
 import TextArea from '../textarea'
 
-function CommentsBlock({count, articleId, items, renderItem, exists, sendComment, isFormOpen}) {
+function CommentsBlock({count, articleId, items, renderItem, exists, sendComment, isFormOpen, t}) {
   const [commentValue, setCommentValue] = useState('')
   if (!items) {
     return ;
@@ -29,7 +29,7 @@ function CommentsBlock({count, articleId, items, renderItem, exists, sendComment
 
   return (
     <div className='CommentsBlock'>
-      <h2>Комментарии ({count})</h2>
+      <h2>{t('comments.title')} ({count})</h2>
       {items.map(item => (
         <div className='CommentsBlock-items' key={item._id}>
           {renderItem(item)}
@@ -41,7 +41,7 @@ function CommentsBlock({count, articleId, items, renderItem, exists, sendComment
         </TextArea>
       )}
       {isFormOpen === `textarea` && !exists &&(
-        <LoginAlert text={'комментировать.'} />
+        <LoginAlert text={'комментировать.'} t={t}/>
       )}
     </div>
   )

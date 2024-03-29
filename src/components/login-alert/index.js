@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-function LoginAlert({text, children}) {
+function LoginAlert({text, children, t}) {
   const navigate = useNavigate()
   const location = useLocation();
   return (
@@ -14,8 +14,8 @@ function LoginAlert({text, children}) {
       fontSize: '16px',
       padding: '0'
     }} onClick={() => navigate('/login', {state: {back: location.pathname}})}>
-      Войдите
-    </button>, чтобы иметь возможность {text} {children}
+        {t('comments.signIn')}
+    </button>, {t("comments.possibility")} {text} {children}
     </p>
   )
 }
